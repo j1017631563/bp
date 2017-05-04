@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="userinfo" > 
+	<sql id="limitSql">
+		 <if test="(start>=0) and (number>=0)">
+		 		LIMIT #{start},#{number}
+		 </if>
+	</sql>
+	<sql id="orderSql">
+		 <if test="order !=null and order != ''">
+		 		ORDER BY ${order}
+		 </if>
+		 <if test="order==null or order == ''">
+		 		ORDER BY createDate desc
+		 </if> 
+	</sql>
+	
+	<select id="queryrows" parameterType="java.util.Map" resultType="com.sys.entity.UserInfo">
+		SELECT * FROM sys_userinfo where 1=1 
+		<if test="username !=null and username != ''">
+	 		AND username like CONCAT(CONCAT('%', #{username}), '%')
+	 	</if> 
+	 	<if test="account !=null and account != ''">
+	 		AND account like CONCAT(CONCAT('%', #{account}), '%')
+	 	</if>
+	 	<if test="status !=null and status != ''">
+	 		AND status=#{status}
+	 	</if>
+	 	<if test="beginDate !=null and beginDate != '' and finishDate !=null and finishDate != ''">
+		 	AND createDate BETWEEN #{beginDate} AND #{finishDate}
+		</if>  
+		<include refid="orderSql"/>
+		<include refid="limitSql"/>
+	</select>
+	
+	<select id="queryrownum" parameterType="java.util.Map"  resultType="int">
+		select 
+			count(1)
+		from sys_userinfo where 1=1 
+		<if test="username !=null and username != ''">
+	 		AND username like CONCAT(CONCAT('%', #{username}), '%')
+	 	</if> 
+	 	<if test="account !=null and account != ''">
+	 		AND account like CONCAT(CONCAT('%', #{account}), '%')
+	 	</if>
+	 	<if test="status !=null and status != ''">
+	 		AND status=#{status}
+	 	</if>
+	 	<if test="beginDate !=null and beginDate != '' and finishDate !=null and finishDate != ''">
+		 	AND createDate BETWEEN #{beginDate} AND #{finishDate}
+		</if>  
+	</select>
+	
+	<!--  插入数据   -->
+	<insert id="insertuser" parameterType="com.sys.entity.UserInfo">
+		INSERT INTO sys_userinfo
+		(id,username,password,account,sex,status,createDate,updateDate,descrit,type)
+	  	 VALUES
+	  	 (#{id},#{username},#{password},#{account},#{sex},#{status},now(),now(),#{descrit},#{type})
+	</insert>
+	
+	<!-- 删除数据 -->
+	<delete id="deleteuser" parameterType="java.lang.String">
+		DELETE FROM sys_userinfo where id in  
+		<foreach item="id" collection="array" open="(" separator="," close=")"> 
+			#{id}  
+		</foreach>
+	</delete>
+	
+	<!-- 根据id数组查数据 -->
+	<select id="queryByIds" resultType="com.sys.entity.UserInfo">
+		select * from sys_userinfo where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+	
+	<!-- 查询一条数据 -->
+	<select id="queryById" parameterType="String" resultType="com.sys.entity.UserInfo">
+		SELECT * FROM sys_userinfo  where id=#{id} 
+	</select>
+	
+	<!-- 根据账号查询用户数据  -->
+	<select id="queryByAccount" parameterType="String" resultType="com.sys.entity.UserInfo">
+		SELECT * FROM sys_userinfo  where account=#{account} 
+	</select>
+	
+	<update id="updateuser" parameterType="com.sys.entity.UserInfo">
+		UPDATE sys_userinfo SET 
+			username=#{username},password=#{password},sex=#{sex},status=#{status},updateDate=#{updateDate},descrit=#{descrit}
+		<where>
+			id=#{id}
+		</where>
+	</update> 
+	
+	
+	
+</mapper>

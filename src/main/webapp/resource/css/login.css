@@ -1,0 +1,41 @@
+a {
+	text-decoration: none;
+	color: blue;
+}
+
+body {
+	background-color: #efefef;
+}
+
+.codeCls {
+	position: relative;
+	border: 1px solid #95B8E7;
+	background-color: #fff;
+	vertical-align: middle;
+	display: inline-block;
+	overflow: hidden;
+	white-space: nowrap;
+	margin: 0;
+	padding: 0;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+	width: 30%;
+	height: 20px;
+	font-size: 12px;
+	border: 1;
+	margin: 0;
+	padding: 4px;
+	white-space: normal;
+	vertical-align: top;
+	outline-style: none;
+	resize: none;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+	outline-color: red
+}
+.login{
+	
+	text-align: center;
+}
